@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.5
 
 import urllib
+import sys
 
 NOTFOUND_TITLE = '<title>404 Not Found</title>'
 CLAIMABLE_TITLE = '    <title>Google I/O - Claim your OpenSocial profile page</title>\n'
@@ -10,6 +11,16 @@ INVALID = "invalid"
 CLAIMABLE = "claimable"
 CLAIMED = "claimed"
 UNKNOWN = "unknown"
+
+
+def generate(start):
+	i = start
+	maxValue = int('0xFFFFFFFF', 16)
+	while i <= maxValue:
+		hexString = "%.8X" % i
+		hexString = hexString.upper()
+		i += 1
+		yield hexString
 
 
 def fetchpage(url):
@@ -40,6 +51,14 @@ def main():
         print "claimed = %s" % fetchpage(claimedurl)
 	print "claimeble = %s" % fetchpage(unclaimedurl)
 	print "unknownurl = %s" % fetchpage(unknownurl)
+
+	start = 0
+
+	if len(sys.argv) > 1:
+		start = int(sys.argv[1])
+
+	for i in generate(start):
+		print i
 
 
 if __name__ == '__main__':
