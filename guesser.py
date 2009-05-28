@@ -2,21 +2,44 @@
 
 import urllib
 
+CLAIMABLE_TITLE = '    <title>Google I/O - Claim your OpenSocial profile page</title>\n'
+CLAIMED_TITLE = '    <title>Google I/O - Friend Connect Scavenger Hunt</title>\n'
+
+INVALID = "invalid"
+CLAIMABLE = "claimable"
+CLAIMED = "claimed"
+UNKNOWN = "unknown"
+
+
 def fetchpage(url):
 	"""Returns whether an url is valid.
 	"""
 
 	page = urllib.urlopen(url)
-	first = page.readline()
+	content = page.readlines()
 
-	return first != '\n'
+	if content[0] == '\n':
+		return INVALID
+
+	if CLAIMABLE_TITLE in content:
+		return CLAIMABLE
+	
+	if CLAIMED_TITLE in content:
+		return CLAIMED
+
+	return UNKNOWN
 
 def main():
-	badurl = "http://googleio.appspot.com/a/839625"
-        goodurl = "http://googleio.appspot.com/a/83962566"
+	invalidurl = "http://googleio.appspot.com/a/839625"
+        claimedurl = "http://googleio.appspot.com/a/83962566"
+	unclaimedurl = "http://googleio.appspot.com/a/FACF4339"
+	unknownurl = "http://googleio.appspot.com/"
 
-	print "bad = %s" % fetchpage(badurl)
-        print "good = %s" % fetchpage(goodurl)
+	print "invalid = %s" % fetchpage(invalidurl)
+        print "claimed = %s" % fetchpage(claimedurl)
+	print "claimeble = %s" % fetchpage(unclaimedurl)
+	print "unknownurl = %s" % fetchpage(unknownurl)
+
 
 if __name__ == '__main__':
 	main()
