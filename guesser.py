@@ -13,6 +13,19 @@ CLAIMED = "claimed"
 UNKNOWN = "unknown"
 
 
+DIGITS='0123456789ABCDEF'
+
+def generate_permutations(prefix):
+	if len(prefix) == 8:
+		return [prefix]
+
+	permutations = []
+
+	for i in DIGITS:
+		permutations.extend(generate_permutations(prefix +i))
+
+	return permutations
+
 def generate(start):
 	i = start
 	maxValue = int('0xFFFFFFFF', 16)
@@ -52,14 +65,12 @@ def main():
 	print "claimeble = %s" % fetchpage(unclaimedurl)
 	print "unknownurl = %s" % fetchpage(unknownurl)
 
-	start = 0
+	start = ""
 
 	if len(sys.argv) > 1:
 		start = int(sys.argv[1])
 
-	for i in generate(start):
-		print i
-
+	generate_permutations(start)
 
 if __name__ == '__main__':
 	main()
