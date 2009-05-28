@@ -2,6 +2,7 @@
 
 import urllib
 
+NOTFOUND_TITLE = '<title>404 Not Found</title>'
 CLAIMABLE_TITLE = '    <title>Google I/O - Claim your OpenSocial profile page</title>\n'
 CLAIMED_TITLE = '    <title>Google I/O - Friend Connect Scavenger Hunt</title>\n'
 
@@ -18,7 +19,7 @@ def fetchpage(url):
 	page = urllib.urlopen(url)
 	content = page.readlines()
 
-	if content[0] == '\n':
+	if NOTFOUND_TITLE in content:
 		return INVALID
 
 	if CLAIMABLE_TITLE in content:
